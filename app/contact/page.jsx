@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import Image from "next/image";
 import styles from "./contact.module.css";
 // import dynamic from "next/dynamic";
@@ -11,14 +11,13 @@ import styles from "./contact.module.css";
 //   { ssr: false }
 // );
 
-// export const metadata = {
-//   title: "Contact Page",
-//   description: "Contact description",
-// };
+export const metadata = {
+  title: "Contact Page",
+  description: "Contact description",
+};
 
 const ContactPage = () => {
-  console.log("--   ContactPage use client  --");
-  const a = Math.random()
+  // const a = Math.random()
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>

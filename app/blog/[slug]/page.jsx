@@ -2,30 +2,45 @@ import Image from "next/image";
 import styles from "./singlePost.module.css";
 import PostUser from "@/components/postUser/postUer";
 import { Suspense } from "react";
+import { getPost } from "@/lib/data";
 
-const getPost = async (slug) => {
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${slug}`,
-    {
-      next: { revalidate: 3600 },
-      // {cache: "force-cache"}
-      // {cache: "no-store"}
-    }
-  );
-  if (!res.ok) {
-    throw new Error("something Wrong...");
-  }
-  return res.json();
+// const getPost = async (slug) => {
+//   const res = await fetch(
+//     `https://jsonplaceholder.typicode.com/posts/${slug}`,
+//     {
+//       next: { revalidate: 3600 },
+//       // {cache: "force-cache"}
+//       // {cache: "no-store"}
+//     }
+//   );
+//   if (!res.ok) {
+//     throw new Error("something Wrong...");
+//   }
+//   return res.json();
+// };
+
+// 也可以接受props参数
+export const generateMetadata = async ({ params }) => {
+    const { slug } = params;
+
+  const post = await getPost(slug);
+
+  return {
+    title: post.title,
+    description: post.desc,
+  };
 };
 
 const SinglePostPage = async ({ params }) => {
   const { slug } = params;
   const post = await getPost(slug);
+  let post_clone = JSON.parse(JSON.stringify(post));
+  console.log(post_clone.createAt);
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>
         <Image
-          src="https://th.bing.com/th/id/R.514811f42b5b45b6c6582deacf055e91?rik=FAcc45tBnhfV4w&riu=http%3a%2f%2fpic.ntimg.cn%2ffile%2f20181015%2f4655173_130107587000_2.jpg&ehk=PeYNUJX%2bIyZa8NlCbx1uEH%2b%2f91OVP1Y%2fvyQ8DK688Jg%3d&risl=&pid=ImgRaw&r=0"
+          src={post.img ? post.img : "/bc_2.jpg"}
           alt=""
           fill
           className={styles.img}
@@ -35,20 +50,9 @@ const SinglePostPage = async ({ params }) => {
       <div className={styles.textContainer}>
         <h1 className={styles.title}>{post.title}</h1>
         <Suspense fallback={<div>Loading...</div>}>
-          <PostUser userId={post.userId} />
+          <PostUser userId={post.userId} createAt={post_clone.createAt} />
         </Suspense>
-        <div className={styles.content}>
-          {post.body}
-          {/* 不要温顺地走入那良夜
-          <br /> 日暮之时 年老之人应燃烧 呐喊 <br />
-          怒斥 怒斥那光的消逝
-          <br /> 智者将逝之时 明白黑暗有理
-          <br /> 因其话语已无法迸发闪电
-          <br /> 但他们 不温顺地走入那良夜 <br />
-          善良之人 当最后一浪过去 <br />
-          哭喊其微小之行本可在绿湾舞蹈生辉
-          <br /> 他们怒斥 怒斥那光的消逝 */}
-        </div>
+        <div className={styles.desc}>{post.desc}</div>
       </div>
     </div>
   );
