@@ -4,24 +4,20 @@ import PostUser from "@/components/postUser/postUer";
 import { Suspense } from "react";
 import { getPost } from "@/lib/data";
 
-// const getPost = async (slug) => {
-//   const res = await fetch(
-//     `https://jsonplaceholder.typicode.com/posts/${slug}`,
-//     {
-//       next: { revalidate: 3600 },
-//       // {cache: "force-cache"}
-//       // {cache: "no-store"}
-//     }
-//   );
-//   if (!res.ok) {
-//     throw new Error("something Wrong...");
-//   }
-//   return res.json();
-// };
+// FETCH DATA WITH AN API
+const getData = async (slug) => {
+  const res = await fetch(`http://localhost:3000/api/blog/${slug}`);
+
+  if (!res.ok) {
+    throw new Error("Something went wrong");
+  }
+
+  return res.json();
+};
 
 // 也可以接受props参数
 export const generateMetadata = async ({ params }) => {
-    const { slug } = params;
+  const { slug } = params;
 
   const post = await getPost(slug);
 
@@ -33,9 +29,8 @@ export const generateMetadata = async ({ params }) => {
 
 const SinglePostPage = async ({ params }) => {
   const { slug } = params;
-  const post = await getPost(slug);
+  const post = await getData(slug);
   let post_clone = JSON.parse(JSON.stringify(post));
-  console.log(post_clone.createAt);
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>
