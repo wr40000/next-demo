@@ -17,10 +17,6 @@ const nextConfig = {
       },
     ],
   },
-  NextAuthOptions : {
-    debug: true, // 启用调试模式
-    // 其他 NextAuth 配置...
-  },
 };
 
 export default nextConfig;
