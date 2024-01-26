@@ -6,11 +6,14 @@ const getPosts = async () => {
   // 模拟接口
   // const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
   // Next.js API 路由
-  const res = await fetch("http://127.0.0.1:3000/api/blog", {
-    next: { revalidate: 3600 },
+  const res = await fetch(
+    "http://127.0.0.1:3000/api/blog",
+    // {
+    //   next: { revalidate: 3600 },
+    // }
     // {cache: "force-cache"}
-    // {cache: "no-store"}
-  });
+    {cache: "no-store"}
+  );
   if (!res.ok) {
     throw new Error("something Wrong...");
   }
