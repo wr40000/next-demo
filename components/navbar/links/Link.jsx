@@ -28,8 +28,7 @@ const links = [
   },
 ];
 
-const Links = ({session}) => {
-
+const Links = ({ session }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,9 +39,10 @@ const Links = ({session}) => {
         })}
         {session?.user ? (
           <>
-            {session.user?.isAdmin && (
+            {
+              // session.user?.isAdmin &&  // isAdmin获取不到，先这样吧
               <NavLink item={{ path: "/admin", title: "Admin" }}>Admin</NavLink>
-            )}
+            }
             <form action={handleLogout}>
               <button className={styles.logout}>Logout</button>
             </form>
